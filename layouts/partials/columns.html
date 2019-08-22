@@ -1,0 +1,35 @@
+
+{{ $class := "columns is-multiline" }}
+
+
+
+{{ $scratch := newScratch }}
+{{/* {{ $scratch.Set "Parent" $dictionary }} */}}
+{{ $scratch.Set "Parent" . }}
+{{/* {{ $scratch.Set "context" (dict "Inner" "Detta er en sabla bra test" ) }} */}}
+
+{{/*
+ Reset the counter in parent shortcode.
+ This is because the parent shortcode is rendered after 
+ all its shilds "column" is rendered.
+ https://discourse.gohugo.io/t/explanation-of-rendering-order/6162
+ */}}
+{{ with .Get "context"}}
+{{ .Page.Scratch.Set "count" 0 }}
+{{ $scratch.Set "context" . }}
+{{ end }}
+
+
+{{ with .Get "class"}}
+  {{ $class = (printf "%s %s" $class . ) }}{{/* Append to default values for column */}} 
+{{ end }}
+
+<div class="{{ $class }}">
+
+{{ with .Get "post"}}
+{{ range . }}
+  {{ $scratch.Set "Inner" . }}
+  {{ partial "column" $scratch }}
+{{ end }}
+{{ end }}
+</div>

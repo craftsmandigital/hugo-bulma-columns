@@ -1,0 +1,14 @@
+
+{{ $dictionary := newScratch }}
+{{/* {{ $dictionary := dict }} */}}
+
+{{ $dictionary.Set "context" . }}
+{{/* {{ $dictionary.Set "Inner" .Inner }} */}}
+{{ $dictionary.Set "Parent" .Parent }}
+{{ $dictionary.Set "Inner" .Inner }}
+
+
+{{ partial "column" $dictionary }}
+
+{{/* Must do something with .Inner else it would not work ???? */}}
+{{ $dummy := .Inner }}
